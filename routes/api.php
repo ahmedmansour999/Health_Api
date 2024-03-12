@@ -4,6 +4,8 @@ use App\Http\Controllers\CommentController;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,3 +37,7 @@ GET|HEAD        api/comments ....... comments.index › App\Models\Comment@index
 
 
 */
+
+
+Route::resource('users', UserController::class)->except(['create', 'edit']);
+

@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    function __construct(){
+        $this->middleware("auth:sanctum");
+    }
+    
     public function index()
     {
         $users = User::all();

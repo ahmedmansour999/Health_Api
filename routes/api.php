@@ -50,4 +50,4 @@ Route::post('Auth/login', [AuthController::class, 'loginUser']);
 // Route::get('login', [AuthController::class, 'loginUser']);
 
 Route::apiResource("appointments",AppointmentController::class);
- main
+

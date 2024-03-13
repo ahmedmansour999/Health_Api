@@ -6,6 +6,7 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AppointmentController;
 
 
 /*
@@ -42,7 +43,11 @@ GET|HEAD        api/comments ....... comments.index › App\Models\Comment@index
 
 Route::resource('users', UserController::class)->except(['create', 'edit']);
 
+
 Route::post('Auth/register', [AuthController::class, 'createUser']);
 // Route::get('register', [AuthController::class, 'createUser']);
 Route::post('Auth/login', [AuthController::class, 'loginUser']);
 // Route::get('login', [AuthController::class, 'loginUser']);
+
+Route::apiResource("appointments",AppointmentController::class);
+ main

@@ -3,10 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-
-class CreateUserRequest extends FormRequest
+class CreateAppointmentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +22,9 @@ class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required',
-            'gender' => 'required|string',
-            'age' => 'required|integer',
-            'number' => 'required|string',
-            'is_admin' => ['required', Rule::in(['patient', 'admin', 'doctor'])],
-            'address' => 'required|string',
+           
+            'date' => 'required|date|after_or_equal:today|unique:appointments,date', 
+            'price' => 'required|numeric|min:0', 
         ];
     }
 }

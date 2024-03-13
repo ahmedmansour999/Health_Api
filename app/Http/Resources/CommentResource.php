@@ -15,6 +15,7 @@ class CommentResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+
             "id"           => $this->id,
             "comment"      => $this->comment,
             "rating"       => $this->rating,
@@ -23,6 +24,7 @@ class CommentResource extends JsonResource
             "updated_at"   => $this-> updated_at  ,
             "doctor"       => $this->doctor,
             "patient"      => $this->patient,
+            
         ] ;
     }
 }

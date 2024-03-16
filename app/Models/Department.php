@@ -16,4 +16,5 @@ class Department extends Model
         return $this->hasMany(Doctor::class) ;
 
     }
+ 
 }

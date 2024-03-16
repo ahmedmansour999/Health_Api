@@ -6,19 +6,23 @@ use App\Models\Appointment;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+
 class DepartmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
 
-    public function index()
-    {
-        // $department = Department::all();
-        // $doctor = $department->doctor;
-        // return $doctor;
-        return Department::all();
-    }
+     public function index()
+     {
+         $departments = Department::all();
+
+         foreach ($departments as $department) {
+             $department->doctor;
+         }
+
+         return $departments;
+     }
 
     /**
      * Store a newly created resource in storage.
@@ -29,17 +33,17 @@ class DepartmentController extends Controller
             'doctor_id' => 'required|exists:doctors,id',
             'description' => 'required|string',
             'name' => 'required|string'
-            ]);
-        
+        ]);
+
         if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()], 401 );
+            return response()->json(['error' => $validator->errors()], 401);
         }
-            
-        $department= Department::create($request->all());
+
+        $department = Department::create($request->all());
         return response()->json([
-                "message" => "Successfully created department!",
-                "data"=> $department
-            ],201);
+            "message" => "Successfully created department!",
+            "data" => $department
+        ], 201);
     }
 
     /**
@@ -60,14 +64,14 @@ class DepartmentController extends Controller
             'description' => 'required|string',
             'name' => 'required|string'
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
         }
-    
+
         $department = Department::findOrFail($id);
         $department->update($request->all());
-    
+
         return response()->json([
             "message" => "department updated successfully!",
             "data" => $department

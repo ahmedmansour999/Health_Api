@@ -51,4 +51,6 @@ Route::post('Auth/register', [AuthController::class, 'createUser']);
 Route::post('Auth/login', [AuthController::class, 'loginUser']);
 // Route::get('login', [AuthController::class, 'loginUser']);
 
+
 Route::apiResource("appointments",AppointmentController::class);
+Route::apiResource("department",DepartmentController::class);

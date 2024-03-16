@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -25,13 +26,25 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+
     }
+
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
+        Schema::dropIfExists('doctors');
+        Schema::dropIfExists('patients');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['patient_id']);
+            $table->dropForeign(['doctor_id']);
+        });
         Schema::dropIfExists('users');
     }
 };
+
+

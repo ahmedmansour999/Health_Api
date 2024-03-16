@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('specialty')->nullable();
             $table->string('hospital')->nullable();
             $table->text('description')->nullable();
-            
             $table->timestamps();
            
         });

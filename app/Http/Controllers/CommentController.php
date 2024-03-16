@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {
+    function __construct(){
+        $this->middleware("auth:sanctum");
+    }
     /**
      * Display a listing of the resource.
      */
@@ -28,7 +31,9 @@ class CommentController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'comment' => 'required | min:2 '
+            'comment' => 'required | min:2 ' ,
+            'doctor_id' => 'required|exists:doctors,id',
+            'patient_id' => 'required|exists:patients,id',
         ]);
 
         if ($validator->fails()) {
@@ -56,7 +61,9 @@ class CommentController extends Controller
     public function update(Request $request, Comment $comment)
     {
         $validator = Validator::make($request->all(), [
-            'comment' => 'required | min:2 '
+            'comment' => 'required | min:2 ',
+            'doctor_id' => 'required|exists:doctors,id',
+            'patient_id' => 'required|exists:patients,id',
         ]);
 
         if ($validator->fails()) {

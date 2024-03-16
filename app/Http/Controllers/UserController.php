@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    function __construct(){
+        $this->middleware("auth:sanctum");
+    }
+    
     public function index()
     {
         $users = User::all();
@@ -19,9 +23,13 @@ class UserController extends Controller
     public function store(CreateUserRequest $request)
     {
         $validatedData = $request->validated();
-        $validatedData['password'] = Hash::make($validatedData['password']);
+
+        // $validatedData['password'] = Hash::make($validatedData['password']);
+
         $user = User::create($validatedData);
-        return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
+
+        return response()->json(['message' => 'User created successfully', 'user' => $user], 200);
+
     }
 
     public function show($id)

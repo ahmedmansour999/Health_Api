@@ -10,12 +10,15 @@ use Illuminate\Support\Facades\Validator;
 
 class AppointmentController extends Controller
 {
+
+    function __construct(){
+        $this->middleware("auth:sanctum");
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
         return Appointment::all();
     }
 
@@ -30,11 +33,11 @@ class AppointmentController extends Controller
             'date' => 'required|date|after_or_equal:today|unique:appointments,date',
             'price' => 'required|numeric|min:0'
             ]);
-        
+
         if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 401 );
         }
-            
+
         $appointment= Appointment::create($request->all());
         return response()->json([
                 "message" => "Successfully created appointment!",
@@ -62,14 +65,14 @@ class AppointmentController extends Controller
             'date' => 'required|date|after_or_equal:today|unique:appointments,date,'.$id,
             'price' => 'required|numeric|min:0'
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
         }
-    
+
         $appointment = Appointment::findOrFail($id);
         $appointment->update($request->all());
-    
+
         return response()->json([
             "message" => "Appointment updated successfully!",
             "data" => $appointment

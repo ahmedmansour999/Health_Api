@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AppointmentController;
-
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\PatientCheckupsController;
+use App\Models\PatientCheckups;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,3 +45,7 @@ GET|HEAD        api/comments ....... comments.index › App\Models\Comment@index
 Route::resource('users', UserController::class)->except(['create', 'edit']);
 
 Route::apiResource("appointments",AppointmentController::class);
+Route::apiResource("departments",DepartmentController::class);
+
+
+Route::apiResource("patientheckups",PatientCheckupsController::class);

@@ -19,7 +19,16 @@ class Doctor extends Model
         return $this->hasMany(Appointment::class) ;
 
     }
+    public function  patientcheckups(){
 
+        return $this->hasMany(patientcheckups::class) ;
 
+    }
+
+    public function department(){
+
+        return $this->belongsTo(Department::class);
+
+    }
 
 }

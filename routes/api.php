@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AppointmentController;
-
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\PatientCheckupsController;
+use App\Models\PatientCheckups;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,4 +52,3 @@ Route::post('Auth/login', [AuthController::class, 'loginUser']);
 // Route::get('login', [AuthController::class, 'loginUser']);
 
 Route::apiResource("appointments",AppointmentController::class);
-

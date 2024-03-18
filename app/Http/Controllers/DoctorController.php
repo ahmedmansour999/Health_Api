@@ -3,48 +3,71 @@
 namespace App\Http\Controllers;
 
 use App\Models\Doctor;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class DoctorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   
     public function index()
     {
-        //
+        $doctors = Doctor::all();
+        return response()->json(['doctors' => $doctors]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'specialization' => 'required|string',
+            'hospital' => 'required|string',
+            'location' => 'required|string',
+            'phone' => 'required|string',
+            'email' => 'required|email',
+            'age' => 'required|string',
+            'gender' => 'required|string',
+            'bio' => 'required|string',
+            'image' => 'required|string',
+            'facebook' => 'nullable|string',
+        ]);
+
+        $doctor = Doctor::create($request->all());
+
+        return response()->json(['message' => 'Doctor created successfully','doctor' => $doctor], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Doctor $doctor)
     {
-        //
+        return response()->json(['doctor' => $doctor]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+ 
     public function update(Request $request, Doctor $doctor)
     {
-        //
+        $request->validate([
+            'specialization' => 'required|string',
+            'hospital' => 'required|string',
+            'location' => 'required|string',
+            'phone' => 'required|string',
+            'email' => 'required|email',
+            'age' => 'required|string',
+            'gender' => 'required|string',
+            'bio' => 'required|string',
+            'image' => 'required|string',
+            'certificates' => 'nullable|json',
+            'facebook' => 'nullable|string',
+        ]);
+
+        $doctor->update($request->all());
+
+        return response()->json(['doctor' => $doctor], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+ 
     public function destroy(Doctor $doctor)
     {
-        //
+        $doctor->delete();
+
+        return response()->json(['message' => 'Doctor deleted successfully'], 200);
     }
 }

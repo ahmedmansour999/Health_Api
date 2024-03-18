@@ -13,7 +13,16 @@ class PatientController extends Controller
      */
     public function index()
     {
-        //
+
+        $patients = patient::all() ;
+        foreach($patients as $patient){
+            $patient->comments ;
+            $patient->appointments ;
+            $patient->patientcheckups ;
+            $patient->department ;
+        }
+        return response()->json(['patient' => $patients], 200);
+
     }
 
     /**
@@ -21,7 +30,14 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+                // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'specialty' => 'required|string|max:255',
+        //     // Add validation rules for other fields
+        // ]);
+
+        $patient = patient::create($request->all());
+        return response()->json(['doctor' => $patient], 201);
     }
 
     /**
@@ -29,7 +45,14 @@ class PatientController extends Controller
      */
     public function show(patient $patient)
     {
-        //
+        $patient->comments ;
+        $patient->appointments ;
+        $patient->patientcheckups ;
+        $patient->department ;
+
+        return response()->json(['patient' => $patient], 200);
+
+
     }
 
     /**
@@ -37,7 +60,14 @@ class PatientController extends Controller
      */
     public function update(Request $request, patient $patient)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'specialty' => 'required|string|max:255',
+            // Add validation rules for other fields
+        ]);
+
+        $patient->update($request->all());
+        return response()->json(['patient' => $patient], 200);
     }
 
     /**
@@ -45,6 +75,7 @@ class PatientController extends Controller
      */
     public function destroy(patient $patient)
     {
-        //
+        $patient->delete();
+        return response()->json(null, 204);
     }
 }

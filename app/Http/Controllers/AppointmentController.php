@@ -31,7 +31,10 @@ class AppointmentController extends Controller
             'doctor_id' => 'required|exists:doctors,id',
             'patient_id' => 'required|exists:patients,id',
             'date' => 'required|date|after_or_equal:today|unique:appointments,date',
-            'price' => 'required|numeric|min:0'
+            'price' => 'required|numeric|min:0',
+            'status' => 'required|in:pending,completed',
+            'description' => 'required|string|max:255',
+            'prescription' => 'nullable|string|max:255'
             ]);
 
         if ($validator->fails()) {
@@ -63,7 +66,10 @@ class AppointmentController extends Controller
             'doctor_id' => 'required|exists:doctors,id',
             'patient_id' => 'required|exists:patients,id',
             'date' => 'required|date|after_or_equal:today|unique:appointments,date,'.$id,
-            'price' => 'required|numeric|min:0'
+            'price' => 'required|numeric|min:0',
+            'status' => 'required|in:pending,completed',
+            'description' => 'required|string|max:255',
+            'prescription' => 'nullable|string|max:255'   /**روشته !!  */
         ]);
 
         if ($validator->fails()) {

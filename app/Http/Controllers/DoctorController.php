@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Doctor;
@@ -7,67 +6,51 @@ use Illuminate\Http\Request;
 
 class DoctorController extends Controller
 {
-   
+
     public function index()
     {
         $doctors = Doctor::all();
-        return response()->json(['doctors' => $doctors]);
+        foreach($doctors as $doctor){
+             $doctor->department ;
+        }
+        return response()->json(['doctors' => $doctors], 200);
     }
-
 
     public function store(Request $request)
     {
-        $request->validate([
-            'specialization' => 'required|string',
-            'hospital' => 'required|string',
-            'location' => 'required|string',
-            'phone' => 'required|string',
-            'email' => 'required|email',
-            'age' => 'required|string',
-            'gender' => 'required|string',
-            'bio' => 'required|string',
-            'image' => 'required|string',
-            'facebook' => 'nullable|string',
-        ]);
+        // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'specialty' => 'required|string|max:255',
+        //     // Add validation rules for other fields
+        // ]);
 
         $doctor = Doctor::create($request->all());
+        return response()->json(['doctor' => $doctor], 201);
 
-        return response()->json(['message' => 'Doctor created successfully','doctor' => $doctor], 201);
     }
-
 
     public function show(Doctor $doctor)
     {
-        return response()->json(['doctor' => $doctor]);
-    }
-
- 
-    public function update(Request $request, Doctor $doctor)
-    {
-        $request->validate([
-            'specialization' => 'required|string',
-            'hospital' => 'required|string',
-            'location' => 'required|string',
-            'phone' => 'required|string',
-            'email' => 'required|email',
-            'age' => 'required|string',
-            'gender' => 'required|string',
-            'bio' => 'required|string',
-            'image' => 'required|string',
-            'certificates' => 'nullable|json',
-            'facebook' => 'nullable|string',
-        ]);
-
-        $doctor->update($request->all());
-
+        $doctor->department ;
         return response()->json(['doctor' => $doctor], 200);
     }
 
- 
+    public function update(Request $request, Doctor $doctor)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'specialty' => 'required|string|max:255',
+            // Add validation rules for other fields
+        ]);
+
+        $doctor->update($request->all());
+        return response()->json(['doctor' => $doctor], 200);
+    }
+
     public function destroy(Doctor $doctor)
     {
         $doctor->delete();
-
-        return response()->json(['message' => 'Doctor deleted successfully'], 200);
+        return response()->json(null, 204);
     }
+
 }

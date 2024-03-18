@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\patient;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
@@ -19,8 +20,11 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        return Appointment::all();
+        $appointments = Appointment::with(['doctor', 'patient'])->get();
+
+        return response()->json(['appointments' => $appointments], 200);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -53,9 +57,11 @@ class AppointmentController extends Controller
      */
     public function show(Appointment $appointment)
     {
-        //
-        return $appointment;
+        $appointmentData = $appointment->load(['doctor', 'patient']);
+
+        return response()->json(['appointment' => $appointmentData], 200);
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -69,7 +75,7 @@ class AppointmentController extends Controller
             'price' => 'required|numeric|min:0',
             'status' => 'required|in:pending,completed',
             'description' => 'required|string|max:255',
-            'prescription' => 'nullable|string|max:255'   /**روشته !!  */
+            'prescription' => 'nullable|string|max:255'   
         ]);
 
         if ($validator->fails()) {

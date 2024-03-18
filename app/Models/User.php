@@ -49,4 +49,14 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+
+    public function doctor(){
+
+        $this->hasMany(Doctor::class) ;
+    }
+    public function patient(){
+
+        $this->hasMany(patient::class) ;
+    }
+
 }

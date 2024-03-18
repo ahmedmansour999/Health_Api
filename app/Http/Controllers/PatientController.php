@@ -10,58 +10,67 @@ class PatientController extends Controller
   
     public function index()
     {
-        $patients = Patient::all();
-        return response()->json(['patients' => $patients]);
+
+        $patients = patient::all() ;
+        foreach($patients as $patient){
+            $patient->comments ;
+            $patient->appointments ;
+            $patient->patientcheckups ;
+            $patient->department ;
+        }
+        return response()->json(['patient' => $patients], 200);
+
     }
 
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'phone' => 'required|string',
-            'address' => 'nullable|string',
-            'gender' => 'nullable|string',
-            'age' => 'nullable|string',
-            'bloodgroup' => 'nullable|string',
-        ]);
+                // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'specialty' => 'required|string|max:255',
+        //     // Add validation rules for other fields
+        // ]);
 
-        $patient = Patient::create($request->all());
-
-        return response()->json(['patient' => $patient], 201);
+        $patient = patient::create($request->all());
+        return response()->json(['doctor' => $patient], 201);
     }
 
-
-    public function show(Patient $patient)
+    /**
+     * Display the specified resource.
+     */
+    public function show(patient $patient)
     {
-        return response()->json(['patient' => $patient]);
+        $patient->comments ;
+        $patient->appointments ;
+        $patient->patientcheckups ;
+        $patient->department ;
+
+        return response()->json(['patient' => $patient], 200);
+
+
     }
 
-
-    public function update(Request $request, Patient $patient)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, patient $patient)
     {
         $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'phone' => 'required|string',
-            'address' => 'nullable|string',
-            'gender' => 'nullable|string',
-            'age' => 'nullable|string',
-            'bloodgroup' => 'nullable|string',
-    
+            'name' => 'required|string|max:255',
+            'specialty' => 'required|string|max:255',
+            // Add validation rules for other fields
         ]);
 
         $patient->update($request->all());
-
         return response()->json(['patient' => $patient], 200);
     }
 
-  
-    public function destroy(Patient $patient)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(patient $patient)
     {
         $patient->delete();
-
-        return response()->json(['message' => 'Patient deleted successfully'], 200);
+        return response()->json(null, 204);
     }
 }

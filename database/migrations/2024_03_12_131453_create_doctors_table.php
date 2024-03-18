@@ -13,20 +13,25 @@ return new class extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('specialty')->nullable();
+            $table->string('hospital')->nullable();
+            $table->text('description')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('specialization');
             $table->string('phone');
             $table->string('email');
-            $table->string('age'); 
-            $table->string('gender'); 
+            $table->string('age');
+            $table->string('gender');
             $table->text('bio')->nullable();
             $table->string('image')->nullable();
-            $table->string('facebook')->nullable(); 
+            $table->string('facebook')->nullable();
 
             $table->timestamps();
+
         });
     }
-    
+
 
     /**
      * Reverse the migrations.

@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('description')->nullable();
             $table->string('disease')->nullable();
-            $table->string('doctor')->nullable();
             $table->string('admit_date')->nullable();
             $table->string('discharge_date')->nullable();
             $table->timestamps();

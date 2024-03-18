@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Doctor;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DoctorController extends Controller
@@ -13,7 +14,9 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        
+        // $usertype = User::where('is_admin' , 'doctor')->get() ;
+
+       
     }
 
     /**

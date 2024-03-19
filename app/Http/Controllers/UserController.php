@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\patient;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -13,11 +14,24 @@ class UserController extends Controller
     function __construct(){
         $this->middleware("auth:sanctum");
     }
-    
+
     public function index()
     {
         $users = User::all();
-        return response()->json(['users' => $users], 200);
+        $usersWithDetails = [];
+
+        foreach ($users as $user) {
+            if ($user->role === 'doctor') {
+                $data = $user->doctor;
+            } elseif ($user->role === 'patient') {
+                $date = $user->patient; // Assuming patient details are stored in a separate table
+
+            } else {
+                $data = $user ;
+            }
+        }
+
+        return response()->json(['users' => $data], 200);
     }
 
     public function store(CreateUserRequest $request)

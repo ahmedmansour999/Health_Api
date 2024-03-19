@@ -35,5 +35,6 @@ class patient extends Model
         return $this->hasMany(patientcheckups::class) ;
 
     }
+ 
 
 }

@@ -42,4 +42,8 @@ class Doctor extends Model
 
     }
 
+    public function user(){
+        $this->belongsTo(User::class) ;
+    }
+
 }

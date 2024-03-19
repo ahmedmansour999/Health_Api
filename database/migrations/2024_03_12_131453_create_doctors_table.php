@@ -17,7 +17,18 @@ return new class extends Migration
             $table->string('specialty')->nullable();
             $table->string('hospital')->nullable();
             $table->text('description')->nullable();
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->string('gender');
+            $table->integer('age');
+            $table->string('number');
+            $table->enum('is_admin',  ['doctor']);
+            $table->string('address');
+            // $table->id('department_id');
+            $table->rememberToken();
             $table->timestamps();
+
 
         });
     }

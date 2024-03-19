@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Doctor;
+use App\Models\patient;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,53 +13,68 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function createUser(Request $request)
-    {
-        try {
-            //Validated
-            $validateUser = Validator::make($request->all(),
-            [
-                'name' => 'required',
-                'email' => 'required|email|unique:users,email',
-                'password' => 'required',
-                'gender' => 'required',
-                'age' => 'required|integer',
-                'number' => 'required|integer',
-                'is_admin' => 'required',
-                'address' => 'required|string',
-            ]);
+    public function createUser(Request $request){
+    try {
+        $validateUser = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required',
+            'gender' => 'required',
+            'age' => 'required|integer',
+            'number' => 'required|integer',
+            'address' => 'required|string',
+            'is_admin' => 'required|in:doctor,patient' // Ensure is_admin is doctor or patient
+        ]);
 
-            if($validateUser->fails()){
-                return response()->json([
-                    'status' => false,
-                    'message' => 'validation error',
-                    'errors' => $validateUser->errors()
-                ], 401);
-            }
-
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'gender' => $request->gender,
-                'age' => $request->age,
-                'number' => $request->number,
-                'is_admin' => $request->is_admin,
-                'address' => $request->address,
-            ]);
-            return response()->json([
-                'status' => true,
-                'message' => 'User Created Successfully',
-                'token' => $user->createToken("token")->plainTextToken
-            ], 200);
-
-        } catch (\Throwable $th) {
+        if ($validateUser->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => $th->getMessage()
-            ], 500);
+                'message' => 'Validation error',
+                'errors' => $validateUser->errors()
+            ], 422);
         }
+
+        $userData = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'gender' => $request->gender,
+            'age' => $request->age,
+            'number' => $request->number,
+            'address' => $request->address,
+        ];
+
+
+        if ($request->is_admin === "doctor" || $request->is_admin === "patient") {
+            $userData['is_admin'] = $request->is_admin;
+            // Create user
+            $user = User::create($userData);
+
+            // Optionally, you can also create a Doctor or Patient record here based on is_admin value
+            if ($request->is_admin === "doctor") {
+                Doctor::create($userData+['department_id'=>$request->department_id]);
+            } elseif ($request->is_admin === "patient") {
+                Patient::create($userData);
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'successfully',
+                'token' => $user->createToken("token")->plainTextToken
+            ], 201); // Use 201 Created status for successful creation
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid user type'
+            ], 422);
+        }
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => false,
+            'message' => $e->getMessage()
+        ], 500);
     }
+}
 
     /**
      * Login The User
@@ -92,7 +109,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'User Logged In Successfully',
+                'message' => 'Successfully',
                 'token' => $user->createToken("API TOKEN")->plainTextToken
             ], 200);
 
@@ -104,12 +121,11 @@ class AuthController extends Controller
         }
     }
 
-//     function logout(){
+//     function logout(Request $request){
 //             $user = Auth::guard('sanctum')->user();
-//             $token = $user->currentAccessToken();
+//             $token = $request->header("token");
 
-//         // delete token
-//             $token->delete();
+//             $token->update("");
 //             return response("Logged out", 200);
 // }
 }

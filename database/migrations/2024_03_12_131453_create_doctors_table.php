@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string('number');
             $table->enum('is_admin',  ['doctor']);
             $table->string('address');
-            // $table->id('department_id');
             $table->rememberToken();
             $table->timestamps();
 

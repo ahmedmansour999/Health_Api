@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Validator;
 class AppointmentController extends Controller
 {
 
-    function __construct(){
-        $this->middleware("auth:sanctum");
-    }
+    // function __construct(){
+    //     $this->middleware("auth:sanctum");
+    // }
     /**
      * Display a listing of the resource.
      */
@@ -34,9 +34,8 @@ class AppointmentController extends Controller
         $validator =  Validator::make($request->all(), [
             'doctor_id' => 'required|exists:doctors,id',
             'patient_id' => 'required|exists:patients,id',
-            'date' => 'required|date|after_or_equal:today|unique:appointments,date',
+            // 'date' => 'required|date|after_or_equal:today|unique:appointments,date',
             'price' => 'required|numeric|min:0',
-            'status' => 'required|in:pending,completed',
             'description' => 'required|string|max:255',
             'prescription' => 'nullable|string|max:255'
             ]);
@@ -75,7 +74,7 @@ class AppointmentController extends Controller
             'price' => 'required|numeric|min:0',
             'status' => 'required|in:pending,completed',
             'description' => 'required|string|max:255',
-            'prescription' => 'nullable|string|max:255'   
+            'prescription' => 'nullable|string|max:255'
         ]);
 
         if ($validator->fails()) {

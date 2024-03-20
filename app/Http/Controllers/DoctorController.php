@@ -12,6 +12,7 @@ class DoctorController extends Controller
         $doctors = Doctor::all();
         foreach($doctors as $doctor){
              $doctor->department ;
+             $doctor->freetime;
         }
         return response()->json(['doctors' => $doctors], 200);
     }

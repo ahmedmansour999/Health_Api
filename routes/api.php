@@ -12,6 +12,7 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientCheckupsController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\FreetimeController;
 use App\Models\Doctor;
 use App\Models\PatientCheckups;
 
@@ -63,5 +64,6 @@ Route::apiResource("department",DepartmentController::class);
 Route::apiResource('doctors' , DoctorController::class) ;
 Route::apiResource('patients' , PatientController::class) ;
 Route::apiResource('posts' , PostController::class) ;
+Route::apiResource('freetimes' , FreetimeController::class) ;
 
 

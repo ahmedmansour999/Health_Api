@@ -18,11 +18,22 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $comments = Comment::all() ;
-        return CommentResource::collection($comments) ;
-    }
+
+     public function index(Request $request)
+     {
+         $doctorId = $request->input('doctor_id');
+
+         // Assuming you have a Comment model and relationships defined between comments, doctors, and patients
+         $comments = Comment::with(['doctor', 'patient'])
+                     ->whereHas('doctor', function ($query) use ($doctorId) {
+                         $query->where('id', $doctorId);
+                     })
+                     ->get();
+
+         return response()->json(['data' => $comments]);
+     }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -45,9 +56,8 @@ class CommentController extends Controller
         return response()->json([ 'state' => "Created Successful" , 'data' => $comment  ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
+
+
     public function show(Comment $comment)
     {
         return response()->json([ 'state' => "success" , 'data' => $comment  ], 200);
@@ -55,9 +65,7 @@ class CommentController extends Controller
     }
 
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, Comment $comment)
     {
         $validator = Validator::make($request->all(), [

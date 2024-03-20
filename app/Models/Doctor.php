@@ -45,5 +45,9 @@ class Doctor extends Model
     public function user(){
         $this->belongsTo(User::class) ;
     }
+    public function  freetime(){
 
+        return $this->hasMany(Freetime::class) ;
+
+    }
 }

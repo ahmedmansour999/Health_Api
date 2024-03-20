@@ -23,7 +23,7 @@ class AuthController extends Controller
             'age' => 'required|integer',
             'number' => 'required|integer',
             'address' => 'required|string',
-            'is_admin' => 'required|in:doctor,patient' // Ensure is_admin is doctor or patient
+            'is_admin' => 'required' 
         ]);
 
         if ($validateUser->fails()) {

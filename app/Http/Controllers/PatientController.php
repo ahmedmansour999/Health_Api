@@ -15,9 +15,11 @@ class PatientController extends Controller
     {
 
         $patients = patient::all() ;
+        
         foreach($patients as $patient){
             $patient->comments ;
             $patient->appointments ;
+           
             $patient->patientcheckups ;
             $patient->department ;
         }

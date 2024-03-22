@@ -12,8 +12,12 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientCheckupsController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\FreetimeController;
 use App\Models\Doctor;
 use App\Models\PatientCheckups;
+use App\Http\Controllers\PaymenttController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -50,18 +54,22 @@ GET|HEAD        api/comments ....... comments.index › App\Models\Comment@index
 Route::resource('users', UserController::class)->except(['create', 'edit']);
 
 
-Route::post('Auth/register', [AuthController::class, 'createUser']);
+Route::post('register', [AuthController::class, 'createUser']);
 // Route::get('register', [AuthController::class, 'createUser']);
-Route::post('Auth/login', [AuthController::class, 'loginUser']);
+Route::post('login', [AuthController::class, 'loginUser']);
 // Route::get('login', [AuthController::class, 'loginUser']);
 
 
 Route::apiResource("appointments",AppointmentController::class);
-Route::apiResource("department",DepartmentController::class);
+Route::apiResource("department",PaymenttController::class);
 
 
 Route::apiResource('doctors' , DoctorController::class) ;
 Route::apiResource('patients' , PatientController::class) ;
 Route::apiResource('posts' , PostController::class) ;
+Route::apiResource('freetimes' , FreetimeController::class) ;
+
+Route::apiResource('payments', PaymenttController::class);
+
 
 

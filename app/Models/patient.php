@@ -4,11 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
 class patient extends Model
 {
-    use HasFactory;
-
+    use HasFactory , HasApiTokens;
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'gender',
+        'age',
+        'number',
+        'is_admin',
+        'address',
+        'image',
+    ];
 
     public function  comments(){
 

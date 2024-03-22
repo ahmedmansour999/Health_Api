@@ -17,20 +17,24 @@ return new class extends Migration
             $table->string('specialty')->nullable();
             $table->string('hospital')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('specialization');
-            $table->string('phone');
-            $table->string('email');
-            $table->string('age');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
             $table->string('gender');
-            $table->text('bio')->nullable();
+            $table->integer('age');
+            $table->string('number');
+            $table->enum('is_admin',  ['doctor']);
             $table->string('image')->nullable();
-            $table->string('facebook')->nullable();
 
+            
+            $table->string('address');
+            $table->rememberToken();
             $table->timestamps();
+
 
         });
     }
+
 
 
     /**

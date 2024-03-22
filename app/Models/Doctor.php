@@ -4,11 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
 class Doctor extends Model
 {
-    use HasFactory;
-
+    use HasFactory , HasApiTokens;
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'gender',
+        'age',
+        'number',
+        'is_admin',
+        'address',
+        'department_id',
+        'image',
+    ];
     public function  comments(){
 
         return $this->hasMany(Comment::class) ;
@@ -34,5 +46,9 @@ class Doctor extends Model
     public function user(){
         $this->belongsTo(User::class) ;
     }
+    public function  freetime(){
 
+        return $this->hasMany(Freetime::class) ;
+
+    }
 }

@@ -13,21 +13,20 @@ return new class extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name');
-            $table->string('email');
-            $table->string('phone');
-            $table->string('address')->nullable();
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
             $table->string('gender');
-            $table->string('age');
-            $table->string('bloodgroup')->nullable();
-            $table->string('photo_path')->nullable();
-            $table->string('image')->nullable();
-            $table->string('description')->nullable();
-            $table->string('disease')->nullable();
-            $table->string('admit_date')->nullable();
-            $table->string('discharge_date')->nullable();
+            $table->integer('age');
+            $table->string('number');
+            $table->enum('is_admin', ['patient']);
+            $table->string('address');
+            $table->rememberToken();
             $table->timestamps();
+            $table->string('image')->nullable();
+
+
         });
     }
 

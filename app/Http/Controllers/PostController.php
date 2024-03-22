@@ -36,15 +36,15 @@ class PostController extends Controller
             'body' => 'required|string',
             'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+        $data = $request->all();
+
 
         $imageName = time().'.'.$request->image->extension();
-        $request->image->move(public_path('images'), $imageName);
+        $imagePath = $request->image->move(public_path('images'), $imageName);
+        $data['image'] = "images/".$imageName;
 
-        $post = new post();
-        $post->title = $request->title;
-        $post->hint = $request->hint;
-        $post->body = $request->body;
-        $post->image = $imageName;
+        $post = Post::create($data);
+       
         $post->save();
 
 

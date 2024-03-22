@@ -24,6 +24,8 @@ return new class extends Migration
             $table->integer('age');
             $table->string('number');
             $table->enum('is_admin',  ['doctor']);
+            $table->string('image')->nullable();
+
             
             $table->string('address');
             $table->rememberToken();

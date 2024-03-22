@@ -32,13 +32,25 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-                // $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'specialty' => 'required|string|max:255',
-        //     // Add validation rules for other fields
-        // ]);
+                 $request->validate([
+            'name' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
 
-        $patient = patient::create($request->all());
+         ]);
+         $data = $request->all();
+    
+         // if ($request->hasFile('image')) {
+             $imageName = time().'.'.$request->image->extension();
+ 
+             $imagePath = $request->image->move(public_path('images'), $imageName);
+             
+           
+         
+           $data['image'] = "images/".$imageName;
+     
+
+        $patient = patient::create($data);
+        $patient->save();
         return response()->json(['doctor' => $patient], 201);
     }
 

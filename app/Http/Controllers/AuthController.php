@@ -62,8 +62,6 @@ class AuthController extends Controller
                 'message' => 'successfully',
                 'token' => $user->createToken("token")->plainTextToken,
                 'id' => $user->id
-                'token' => $user->createToken("token")->plainTextToken ,
-                "id" => $user->id
             ], 201); // Use 201 Created status for successful creation
         } else {
             return response()->json([
@@ -116,8 +114,6 @@ class AuthController extends Controller
                 'token' => $user->createToken("API TOKEN")->plainTextToken,
                 'id' => $user->id
 
-                'token' => $user->createToken("API TOKEN")->plainTextToken ,
-                "id" => $user->id
             ], 200);
 
         } catch (\Throwable $th) {

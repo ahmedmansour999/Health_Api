@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Doctor;
 use App\Models\patient;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,6 +19,19 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
+
+        // foreach ($users as $user) {
+        //     if ($user->is_admin == 'doctor') {
+        //         $data = $user->doctor;
+        //     } elseif ($user->is_admin == 'patient') {
+        //         $data = $user->patient; // Assuming patient details are stored in a separate table
+        //     } else {
+        //         $data = $user ;
+        //     }
+        // }
+
+        return response()->json(['users' => $users], 200);
+
         $data = [];
 
         foreach ($users as $user) {
@@ -62,7 +76,7 @@ class UserController extends Controller
         }
 
         $user->update($validatedData);
-        return response()->json(['message' => 'User updated successfully'], 200);
+        return response()->json(['message' => 'successfully'], 200);
     }
 
     public function destroy($id)
@@ -71,4 +85,5 @@ class UserController extends Controller
         $user->delete();
         return response()->json(['message' => 'User deleted successfully'], 200);
     }
+
 }

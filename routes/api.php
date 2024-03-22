@@ -57,6 +57,7 @@ Route::resource('users', UserController::class)->except(['create', 'edit']);
 Route::post('register', [AuthController::class, 'createUser']);
 // Route::get('register', [AuthController::class, 'createUser']);
 Route::post('login', [AuthController::class, 'loginUser']);
+// Route::post('logout', [AuthController::class, 'logout']);
 // Route::get('login', [AuthController::class, 'loginUser']);
 
 

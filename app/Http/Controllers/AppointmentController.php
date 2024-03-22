@@ -47,7 +47,7 @@ class AppointmentController extends Controller
         $validator =  Validator::make($request->all(), [
             'doctor_id' => 'required|exists:doctors,id',
             'patient_id' => 'required|exists:patients,id',
-            // 'date' => 'required|date|after_or_equal:today|unique:appointments,date',
+            'date' => 'required',
             'price' => 'required|numeric|min:0',
             'description' => 'required|string|max:255',
             'prescription' => 'nullable|string|max:255'
@@ -79,7 +79,10 @@ class AppointmentController extends Controller
         $validator = Validator::make($request->all(), [
             'doctor_id' => 'required|exists:doctors,id',
             'patient_id' => 'required|exists:patients,id',
+
+            'date' => 'required',
             // 'date' => 'required|date|after_or_equal:today|unique:appointments,date,' . $id,
+
             'price' => 'required|numeric|min:0',
             'description' => 'required|string|max:255',
             'prescription' => 'nullable|string|max:255'

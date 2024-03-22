@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Payment extends Model
 {
     use HasFactory;
-    // protected $guarded = [] ;
+
     protected $fillable = [
-        'title',
-        'image',
-        'hint',
-        'time',
-        'body',
+        'name_on_card',
+        'card_number',
+        'cvc',
+        'expiry_month',
+        'expiry_year',
     ];
-    
 }

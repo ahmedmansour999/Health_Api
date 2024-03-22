@@ -23,9 +23,9 @@ class Comment extends Model
 
     // retlation one to many with patient
 
-    public function patient(){
+    public function user(){
 
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(User::class);
 
     }
 

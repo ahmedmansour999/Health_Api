@@ -27,7 +27,7 @@ class FreetimeController extends Controller
             'doctor_freetimes' => 'required|date_format:Y-m-d H:i:s',
         ]);
 
-        
+
         $freetime = new Freetime();
         $freetime->doctor_id = $request->doctor_id;
         $freetime->doctor_freetimes = $validatedData['doctor_freetimes'];
@@ -44,9 +44,15 @@ class FreetimeController extends Controller
         return response()->json($freetime);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
+    public function getFreetimesForDoctor($doctorId)
+    {
+        $freetimes = Freetime::where('doctor_id', $doctorId)->get();
+        return response()->json(['freetimes' => $freetimes], 200);
+    }
+
+
+    
     public function update(Request $request, Freetime $freetime)
     {
         $validatedData = $request->validate([

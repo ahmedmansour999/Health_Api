@@ -62,6 +62,8 @@ class AuthController extends Controller
                 'message' => 'successfully',
                 'token' => $user->createToken("token")->plainTextToken,
                 'id' => $user->id
+                'token' => $user->createToken("token")->plainTextToken ,
+                "id" => $user->id
             ], 201); // Use 201 Created status for successful creation
         } else {
             return response()->json([
@@ -113,6 +115,9 @@ class AuthController extends Controller
                 'message' => 'Successfully',
                 'token' => $user->createToken("API TOKEN")->plainTextToken,
                 'id' => $user->id
+
+                'token' => $user->createToken("API TOKEN")->plainTextToken ,
+                "id" => $user->id
             ], 200);
 
         } catch (\Throwable $th) {
@@ -145,4 +150,28 @@ class AuthController extends Controller
 //             }
 
 // }
+
+    // public function logout(Request $request)
+    // {
+    //     try {
+    //         // Retrieve the authenticated user
+    //         $user = Auth::user();
+
+
+    //         $user->tokens()->delete();
+
+    //         return response()->json([
+    //             'status' => true,
+    //             'message' => 'Logged out successfully'
+    //         ], 200);
+    //     } catch (\Throwable $th) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'Failed to logout: ' . $th->getMessage()
+    //         ], 500);
+    //     }
+    // }
+
+
+
 }

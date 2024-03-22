@@ -18,7 +18,8 @@ class Doctor extends Model
         'number',
         'is_admin',
         'address',
-        'department_id'
+        'department_id',
+        'image',
     ];
     public function  comments(){
 

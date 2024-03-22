@@ -18,6 +18,7 @@ class patient extends Model
         'number',
         'is_admin',
         'address',
+        'image',
     ];
 
 

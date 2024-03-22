@@ -15,6 +15,9 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\FreetimeController;
 use App\Models\Doctor;
 use App\Models\PatientCheckups;
+use App\Http\Controllers\PaymenttController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -59,15 +62,15 @@ Route::post('login', [AuthController::class, 'loginUser']);
 
 Route::apiResource("appointments",AppointmentController::class);
 Route::apiResource("department",DepartmentController::class);
-Route::get('appointmentDoc/{id}' , [AppointmentController::class , 'getAppointmentsForDoctor' ]) ;
-Route::get('appointmentStatus/{doctorId}/{status}', [AppointmentController::class, 'getAppointmentStatus']);
-Route::patch('appointmentDoc/{id}' , [AppointmentController::class , 'updateAppointmentStatus' ]) ;
 
 
 Route::apiResource('doctors' , DoctorController::class) ;
 Route::apiResource('patients' , PatientController::class) ;
 Route::apiResource('posts' , PostController::class) ;
 Route::apiResource('freetimes' , FreetimeController::class) ;
+
+Route::apiResource('payments', PaymenttController::class);
+
 Route::get('freetimesDoc/{doctorId}' , [FreetimeController::class , 'getFreetimesForDoctor']) ;
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');

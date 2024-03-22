@@ -1,40 +1,43 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Payment;
 
-class PaymenttController extends Controller
+class StripeController extends Controller
 {
-    
-    public function index()
+    public function checkout()
     {
-        return Payment::all();
+        return view('checkout');
     }
 
-    public function show($id)
+    public function session()
     {
-        return Payment::find($id);
+        \Stripe\Stripe::setApiKey(config('stripe.sk'));
+
+        $session = \Stripe\Checkout\Session::create([
+            'line_items'  => [
+                [
+                    'price_data' => [
+                        'currency'     => 'gbp',
+                        'product_data' => [
+                            'name' => 'gimme money!!!!',
+                        ],
+                        'unit_amount'  => 500,
+                    ],
+                    'quantity'   => 1,
+                ],
+            ],
+            'mode'        => 'payment',
+            'success_url' => route('success'),
+            'cancel_url'  => route('checkout'),
+        ]);
+
+        return redirect()->away($session->url);
     }
 
-    public function store(Request $request)
+    public function success()
     {
-        $payment = Payment::create($request->all());
-        return response()->json($payment, 201);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $payment = Payment::findOrFail($id);
-        $payment->update($request->all());
-        return response()->json($payment, 200);
-    }
-
-    public function destroy($id)
-    {
-        Payment::findOrFail($id)->delete();
-        return response()->json(null, 204);
+        return "Yay, It works!!!";
     }
 }

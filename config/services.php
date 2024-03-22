@@ -32,6 +32,9 @@ return [
     ],
     'stripe' => [
         'secret' => env('STRIPE_SECRET'),
+        'pk' => env('STRIPE_PK'),
+        'sk' => env('STRIPE_SK'),
     ],
+
 
 ];

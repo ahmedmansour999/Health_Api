@@ -62,6 +62,7 @@ Route::post('login', [AuthController::class, 'loginUser']);
 
 
 Route::apiResource("appointments",AppointmentController::class);
+Route::get("appointmentDoc/{doctorId}",[AppointmentController::class , 'getAppointmentsForDoctor']);
 Route::apiResource("department",DepartmentController::class);
 
 
@@ -70,7 +71,9 @@ Route::apiResource('patients' , PatientController::class) ;
 Route::apiResource('posts' , PostController::class) ;
 Route::apiResource('freetimes' , FreetimeController::class) ;
 
-Route::apiResource('payments', PaymenttController::class);
+// Route::apiResource('payments', PaymenttController::class);
+
+
 
 Route::get('freetimesDoc/{doctorId}' , [FreetimeController::class , 'getFreetimesForDoctor']) ;
 

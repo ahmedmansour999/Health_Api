@@ -19,6 +19,7 @@ return new class extends Migration
             // $table->date('date');
             $table->integer('price');
             $table->text('note')->nullable();
+            $table->dateTime('date');
 
         });
     }

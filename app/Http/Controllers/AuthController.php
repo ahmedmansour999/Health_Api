@@ -23,7 +23,7 @@ class AuthController extends Controller
             'age' => 'required|integer',
             'number' => 'required|integer',
             'address' => 'required|string',
-            'is_admin' => 'required' 
+            'is_admin' => 'required'
         ]);
 
         if ($validateUser->fails()) {
@@ -60,7 +60,8 @@ class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'successfully',
-                'token' => $user->createToken("token")->plainTextToken
+                'token' => $user->createToken("token")->plainTextToken,
+                'id' => $user->id
             ], 201); // Use 201 Created status for successful creation
         } else {
             return response()->json([
@@ -110,7 +111,8 @@ class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken
+                'token' => $user->createToken("API TOKEN")->plainTextToken,
+                'id' => $user->id
             ], 200);
 
         } catch (\Throwable $th) {
@@ -121,11 +123,26 @@ class AuthController extends Controller
         }
     }
 
-//     function logout(Request $request){
+//     public function logout(Request $request){
 //             $user = Auth::guard('sanctum')->user();
 //             $token = $request->header("token");
+//             if($token !== null){
+//               $user=   User::where( "token","=" , $token )->first();
 
-//             $token->update("");
-//             return response("Logged out", 200);
+//               if($user !== null){
+//                 $user->update([
+//                     "token"=>null
+//                 ]);
+//                 return response("you logged out successfully", 200);
+
+//               }else{
+//                 return response("token not correct", 404);
+
+//               }
+//             }else{
+//                 return response("token not founded", 404);
+
+//             }
+
 // }
 }

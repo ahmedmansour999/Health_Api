@@ -32,7 +32,9 @@ class DoctorController extends Controller
 
     public function show(Doctor $doctor)
     {
+
         $doctor->department ;
+        $doctor->freetime;
         return response()->json(['doctor' => $doctor], 200);
     }
 

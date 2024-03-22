@@ -9,7 +9,9 @@ class Appointment extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $guarded = [
+        
+    ];
 
 
     // retlation one to many with Doctor

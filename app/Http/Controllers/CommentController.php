@@ -12,19 +12,14 @@ use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {
-    function __construct(){
-        $this->middleware("auth:sanctum");
-    }
-    /**
-     * Display a listing of the resource.
-     */
+
 
      public function index(Request $request)
      {
          $doctorId = $request->input('doctor_id');
 
-         // Assuming you have a Comment model and relationships defined between comments, doctors, and patients
-         $comments = Comment::with(['doctor', 'patient'])
+         // Assuming you have a Comment model and relationships defined between comments, doctors, and users
+         $comments = Comment::with(['doctor', 'user'])
                      ->whereHas('doctor', function ($query) use ($doctorId) {
                          $query->where('id', $doctorId);
                      })
@@ -44,7 +39,7 @@ class CommentController extends Controller
         $validator = Validator::make($request->all(), [
             'comment' => 'required | min:2 ' ,
             'doctor_id' => 'required|exists:doctors,id',
-            'patient_id' => 'required|exists:patients,id',
+            'user_id' => 'required|exists:users,id',
         ]);
 
         if ($validator->fails()) {
@@ -52,7 +47,7 @@ class CommentController extends Controller
         }
 
         $comment = Comment::create($request->all()) ;
-        // $comment->patient_id = Auth()->user()->id ;
+        // $comment->user_id = Auth()->user()->id ;
         return response()->json([ 'state' => "Created Successful" , 'data' => $comment  ], 201);
     }
 
@@ -71,14 +66,14 @@ class CommentController extends Controller
         $validator = Validator::make($request->all(), [
             'comment' => 'required | min:2 ',
             'doctor_id' => 'required|exists:doctors,id',
-            'patient_id' => 'required|exists:patients,id',
+            'user_id' => 'required|exists:users,id',
         ]);
 
         if ($validator->fails()) {
             return response()->json([ 'state' => 401 , 'error' => $validator->errors()->all()  ], 401);
         }
         $comment->update($request->all()) ;
-        // $comment->patient_id = Auth()->user()->id ;
+        // $comment->user_id = Auth()->user()->id ;
         return response()->json([ 'state' => "Updated Successfull" , 'data' => $comment  ] , 200);
     }
 

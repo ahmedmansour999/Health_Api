@@ -13,9 +13,14 @@ class DoctorController extends Controller
         foreach($doctors as $doctor){
              $doctor->department ;
              $doctor->freetime;
+             $doctor->appointments ;
         }
         return response()->json(['doctors' => $doctors], 200);
     }
+
+
+    
+
 
     public function store(Request $request)
     {

@@ -18,27 +18,27 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        $usersWithDetails = [];
+        $data = [];
 
         foreach ($users as $user) {
-            if ($user->role === 'doctor') {
-                $data = $user->doctor;
-            } elseif ($user->role === 'patient') {
-                $date = $user->patient; // Assuming patient details are stored in a separate table
-
+            if ($user->is_admin == 'doctor') {
+                $data[] = $user->doctor;
+            } elseif ($user->is_admin == 'patient') {
+                $data[] = $user->patient;
             } else {
-                $data = $user ;
+                $data[] = $user;
             }
         }
 
         return response()->json(['users' => $data], 200);
     }
 
+
     public function store(CreateUserRequest $request)
     {
         $validatedData = $request->validated();
 
-        // $validatedData['password'] = Hash::make($validatedData['password']);
+        $validatedData['password'] = Hash::make($validatedData['password']);
 
         $user = User::create($validatedData);
 

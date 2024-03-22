@@ -15,9 +15,7 @@ class AppointmentController extends Controller
     // function __construct(){
     //     $this->middleware("auth:sanctum");
     // }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $appointments = Appointment::with(['doctor', 'patient'])->get();
@@ -26,9 +24,24 @@ class AppointmentController extends Controller
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function getAppointmentsForDoctor($doctorId)
+    {
+        $appointments = Appointment::with(['doctor', 'patient'])->where('doctor_id', $doctorId)->get();
+        return response()->json(['appointments' => $appointments], 200);
+    }
+
+    public function getAppointmentStatus($doctorId, $status)
+    {
+        $appointments = Appointment::with(['doctor', 'patient'])
+                                   ->where('doctor_id', $doctorId)
+                                   ->where('status', $status)
+                                   ->get();
+
+        return response()->json(['appointments' => $appointments], 200);
+    }
+
+
+
     public function store(Request $request)
     {
         $validator =  Validator::make($request->all(), [
@@ -38,22 +51,20 @@ class AppointmentController extends Controller
             'price' => 'required|numeric|min:0',
             'description' => 'required|string|max:255',
             'prescription' => 'nullable|string|max:255'
-            ]);
+        ]);
 
         if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()], 401 );
+            return response()->json(['error' => $validator->errors()], 401);
         }
 
-        $appointment= Appointment::create($request->all());
+        $appointment = Appointment::create($request->all());
         return response()->json([
-                "message" => "Successfully created appointment!",
-                "data"=> $appointment
-            ],201);
+            "message" => "Successfully created appointment!",
+            "data" => $appointment
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Appointment $appointment)
     {
         $appointmentData = $appointment->load(['doctor', 'patient']);
@@ -62,17 +73,14 @@ class AppointmentController extends Controller
     }
 
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             'doctor_id' => 'required|exists:doctors,id',
             'patient_id' => 'required|exists:patients,id',
-            'date' => 'required|date|after_or_equal:today|unique:appointments,date,'.$id,
+            // 'date' => 'required|date|after_or_equal:today|unique:appointments,date,' . $id,
             'price' => 'required|numeric|min:0',
-            'status' => 'required|in:pending,completed',
             'description' => 'required|string|max:255',
             'prescription' => 'nullable|string|max:255'
         ]);
@@ -90,15 +98,28 @@ class AppointmentController extends Controller
         ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    public function updateAppointmentStatus($appointmentId, Request $request)
+    {
+        $appointment = Appointment::find($appointmentId);
+        if (!$appointment) {
+            return response()->json(['error' => 'Appointment not found'], 404);
+        }
+
+        $newStatus = $request->input('status');
+        $appointment->status = $newStatus;
+        $appointment->save();
+
+        return response()->json(['message' => 'Appointment status updated successfully'], 200);
+    }
+
+
+
     public function destroy(Appointment $appointment)
     {
         //
         $appointment->delete();
         return response()->json([
             "message" => "Appointment Deleted successfully!"
-        ],200);
+        ], 200);
     }
 }

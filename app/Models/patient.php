@@ -20,21 +20,23 @@ class patient extends Model
         'address',
     ];
 
-    public function  comments(){
 
-        return $this->hasMany(Comment::class) ;
-
-    }
     public function  appointments(){
 
         return $this->hasMany(Appointment::class) ;
 
     }
+
     public function  patientcheckups(){
 
         return $this->hasMany(patientcheckups::class) ;
 
     }
- 
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 
 }

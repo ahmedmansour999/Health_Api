@@ -59,8 +59,15 @@ Route::post('register', [AuthController::class, 'createUser']);
 Route::post('login', [AuthController::class, 'loginUser']);
 // Route::post('logout', [AuthController::class, 'logout']);
 // Route::get('login', [AuthController::class, 'loginUser']);
+// Route::post('logout', [AuthController::class, 'logout']);
 
+Route::middleware('auth:sanctum')->post('/logout', function (Request $request) {
+    return $request->user();
+    $request->user()->tokens()->delete();
 
+    return response()->json(['message' => 'Logged out successfully']);
+});
+Route::get("appointmentDoc/{doctorId}",[AppointmentController::class , 'getAppointmentsForDoctor']);
 Route::apiResource("appointments",AppointmentController::class);
 Route::apiResource("department",DepartmentController::class);
 
@@ -70,10 +77,10 @@ Route::apiResource('patients' , PatientController::class) ;
 Route::apiResource('posts' , PostController::class) ;
 Route::apiResource('freetimes' , FreetimeController::class) ;
 
-Route::apiResource('payments', PaymenttController::class);
+// Route::apiResource('payments', PaymenttController::class);
 
 Route::get('freetimesDoc/{doctorId}' , [FreetimeController::class , 'getFreetimesForDoctor']) ;
 
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+// Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 

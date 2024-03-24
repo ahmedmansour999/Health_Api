@@ -61,9 +61,7 @@ class AuthController extends Controller
                 'status' => true,
                 'message' => 'successfully',
                 'token' => $user->createToken("token")->plainTextToken,
-                'id' => $user->id
-                'token' => $user->createToken("token")->plainTextToken ,
-                "id" => $user->id
+                'id' => $user->id ,
             ], 201); // Use 201 Created status for successful creation
         } else {
             return response()->json([
@@ -114,10 +112,9 @@ class AuthController extends Controller
                 'status' => true,
                 'message' => 'Successfully',
                 'token' => $user->createToken("API TOKEN")->plainTextToken,
-                'id' => $user->id
-
-                'token' => $user->createToken("API TOKEN")->plainTextToken ,
-                "id" => $user->id
+                'id' => $user->id,
+                'is_admin'=>$user->is_admin,
+                'name' => $user->name
             ], 200);
 
         } catch (\Throwable $th) {

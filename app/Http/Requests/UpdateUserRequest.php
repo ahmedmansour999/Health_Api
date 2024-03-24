@@ -25,13 +25,12 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => 'required|string',
             'email' => ['required', 'email', Rule::unique('users')->ignore($this->route('user'))],
-
-            'password' => 'sometimes|required|string',
-            'gender' => 'required|string',
-            'age' => 'required|integer',
-            'number' => 'required|string',
+            // 'password' => 'sometimes|required|string',
+            // 'gender' => 'required|string',
+            // 'age' => 'required|integer',
+            // 'number' => 'required|string',
             'is_admin' => ['required', Rule::in(['patient', 'admin', 'doctor'])],
-            'address' => 'required|string'
+            // 'address' => 'required|string'
         ];
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('doctor_id')->constrained()->onDelete('cascade');
             // $table->foreignId('')->constrained('appointments')->onDelete('cascade')->onUpdate('cascade');
             $table->dateTime('doctor_freetimes');
+            $table->dateTime('doctor_freetimesto');
 
         });
     }

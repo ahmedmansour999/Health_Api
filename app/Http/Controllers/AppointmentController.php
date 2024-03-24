@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use App\Models\patient;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
@@ -12,9 +13,9 @@ use Illuminate\Support\Facades\Validator;
 class AppointmentController extends Controller
 {
 
-    // function __construct(){
-    //     $this->middleware("auth:sanctum");
-    // }
+    function __construct(){
+        $this->middleware("auth:sanctum");
+    }
 
     public function index()
     {
@@ -26,6 +27,7 @@ class AppointmentController extends Controller
 
     public function getAppointmentsForDoctor($doctorId)
     {
+
         $appointments = Appointment::with(['doctor', 'patient'])->where('doctor_id', $doctorId)->get();
         return response()->json(['appointments' => $appointments], 200);
     }
@@ -46,7 +48,7 @@ class AppointmentController extends Controller
     {
         $validator =  Validator::make($request->all(), [
             'doctor_id' => 'required|exists:doctors,id',
-            'patient_id' => 'required|exists:patients,id',
+            'patient_id' => 'required|exists:users,id',
             'date' => 'required',
             'price' => 'required|numeric|min:0',
             'description' => 'required|string|max:255',
@@ -56,7 +58,8 @@ class AppointmentController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
         }
-
+        $patient = patient::where('user_id',$request->patient_id)->first() ;
+        $request['patient_id'] = $patient->id ;
         $appointment = Appointment::create($request->all());
         return response()->json([
             "message" => "Successfully created appointment!",
@@ -92,6 +95,13 @@ class AppointmentController extends Controller
             return response()->json(['error' => $validator->errors()], 401);
         }
 
+        Payment::create([
+            'name_on_card' => 'test',
+            'card_number'=>'123456',
+            'cvc'=>'123',
+            'expiry_month'=>'123',
+            'expiry_year'=>'02/25'
+        ]);
         $appointment = Appointment::findOrFail($id);
         $appointment->update($request->all());
 

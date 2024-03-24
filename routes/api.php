@@ -69,6 +69,7 @@ Route::middleware('auth:sanctum')->post('/logout', function (Request $request) {
 });
 Route::get("appointmentDoc/{doctorId}",[AppointmentController::class , 'getAppointmentsForDoctor']);
 Route::apiResource("appointments",AppointmentController::class);
+Route::get("appointmentDoc/{doctorId}",[AppointmentController::class , 'getAppointmentsForDoctor']);
 Route::apiResource("department",DepartmentController::class);
 
 
@@ -79,8 +80,11 @@ Route::apiResource('freetimes' , FreetimeController::class) ;
 
 // Route::apiResource('payments', PaymenttController::class);
 
+
+
 Route::get('freetimesDoc/{doctorId}' , [FreetimeController::class , 'getFreetimesForDoctor']) ;
 
-// Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::get("appointmentDoc/{doctorId}",[AppointmentController::class , 'getAppointmentsForDoctor']);
 
 

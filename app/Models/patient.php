@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Paddle\Billable;
+
 
 class patient extends Model
 {
-    use HasFactory , HasApiTokens;
+    use HasFactory , HasApiTokens,Billable;
     protected $fillable = [
         'name',
         'email',

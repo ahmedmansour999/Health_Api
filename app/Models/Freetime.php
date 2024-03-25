@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Freetime extends Model
 {
     use HasFactory;
-    public function doctor(){
+    protected $guarded = [] ;
+        public function doctor(){
         $this->belongsTo(Doctor::class) ;
     }
 }

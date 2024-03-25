@@ -24,8 +24,9 @@ class FreetimeController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'doctor_freetimes' => 'required|date_format:Y-m-d H:i:s',
-            'doctor_freetimesto' => 'required|date_format:Y-m-d H:i:s',
+            'doctor_freetimes' => 'required',
+            'doctor_freetimesto' => 'required',
+            'days' => 'required',
         ]);
 
 
@@ -33,6 +34,7 @@ class FreetimeController extends Controller
         $freetime->doctor_id = $request->doctor_id;
         $freetime->doctor_freetimes = $validatedData['doctor_freetimes'];
         $freetime->doctor_freetimesto = $validatedData['doctor_freetimesto'];
+        $freetime->days = $validatedData['days'];
         $freetime->save();
 
         return response()->json(['message' => 'Doctor Free Appointment time  created successfully', 'freetime' => $freetime], 201);

@@ -58,7 +58,7 @@ class AppointmentController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
         }
-        $patient = patient::where('user_id',$request->patient_id)->first() ;
+        $patient = patient::where('user_id',$request->patient_id)->first();
         $request['patient_id'] = $patient->id ;
         $appointment = Appointment::create($request->all());
         return response()->json([

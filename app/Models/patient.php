@@ -10,7 +10,7 @@ use Laravel\Paddle\Billable;
 
 class patient extends Model
 {
-    use HasFactory , HasApiTokens,Billable;
+    use HasFactory , HasApiTokens;
     protected $fillable = [
         'name',
         'email',
@@ -21,6 +21,7 @@ class patient extends Model
         'is_admin',
         'address',
         'image',
+        'user_id'
     ];
 
 

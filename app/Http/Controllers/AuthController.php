@@ -21,7 +21,7 @@ class AuthController extends Controller
             'password' => 'required',
             'gender' => 'required',
             'age' => 'required|integer',
-            'number' => 'required|integer',
+            'number' => 'required',
             'address' => 'required|string',
             'is_admin' => 'required'
         ]);
@@ -114,7 +114,8 @@ class AuthController extends Controller
                 'token' => $user->createToken("API TOKEN")->plainTextToken,
                 'id' => $user->id,
                 'is_admin'=>$user->is_admin,
-                'name' => $user->name
+                'name' => $user->name,
+                'email' => $user->email
             ], 200);
 
         } catch (\Throwable $th) {

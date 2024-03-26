@@ -15,11 +15,11 @@ class PatientController extends Controller
     {
 
         $patients = patient::all() ;
-        
+
         foreach($patients as $patient){
             $patient->comments ;
             $patient->appointments ;
-           
+
             $patient->patientcheckups ;
             $patient->department ;
         }
@@ -32,27 +32,39 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-                 $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-         ]);
-         $data = $request->all();
-    
-         // if ($request->hasFile('image')) {
-             $imageName = time().'.'.$request->image->extension();
- 
-             $imagePath = $request->image->move(public_path('images'), $imageName);
-             
-           
-         
-           $data['image'] = "images/".$imageName;
-     
+        // Assuming you're using authentication and have access to the authenticated user
+        $user = $request->user();
 
-        $patient = patient::create($data);
-        $patient->save();
-        return response()->json(['doctor' => $patient], 201);
+        // Prepare data for patient creation
+        $data = [
+            'name' => $request->name,
+            'image' => null, // Placeholder for image path
+        ];
+
+        // Handle image upload
+
+            $imageName = time().'.'.$request->image->extension();
+            $imagePath = $request->image->move(public_path('images'), $imageName);
+            $data['image'] = "images/".$imageName;
+
+
+        // If a user is authenticated, associate the patient with the user
+        if ($user) {
+            $data['user_id'] = $user->id;
+        }
+
+        // Create patient record
+        $patient = Patient::create($data);
+
+        $patient->save() ;
+        return response()->json(['patient' => $patient], 201);
     }
+
 
     /**
      * Display the specified resource.

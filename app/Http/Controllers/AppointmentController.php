@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Doctor;
 use App\Models\patient;
 use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
@@ -25,15 +27,35 @@ class AppointmentController extends Controller
     }
 
 
-    public function getAppointmentsForDoctor($doctorId)
+    public function getAppointmentsForDoctor($user_id)
     {
+        // Get the doctor associated with the provided user_id
+        $doctor = Doctor::where('user_id', $user_id)->first();
 
+        // Check if a doctor with the given user_id exists
+        if (!$doctor) {
+            return response()->json(['message' => 'Doctor not found for the given user_id'], 404);
+        }
+
+        // Retrieve the doctor's id
+        $doctorId = $doctor->id;
+
+        // Retrieve appointments for the doctor with the retrieved doctorId
         $appointments = Appointment::with(['doctor', 'patient'])->where('doctor_id', $doctorId)->get();
+
         return response()->json(['appointments' => $appointments], 200);
     }
 
-    public function getAppointmentStatus($doctorId, $status)
+
+    public function getAppointmentStatus($user_id, $status)
     {
+        $doctor = Doctor::where('user_id', $user_id)->first();
+
+        if (!$doctor) {
+            return response()->json(['message' => 'Doctor not found for the given user_id'], 404);
+        }
+
+        $doctorId = $doctor->id;
         $appointments = Appointment::with(['doctor', 'patient'])
                                    ->where('doctor_id', $doctorId)
                                    ->where('status', $status)

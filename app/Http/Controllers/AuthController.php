@@ -13,69 +13,81 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function createUser(Request $request){
-    try {
-        $validateUser = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required',
-            'gender' => 'required',
-            'age' => 'required|integer',
-            'number' => 'required',
-            'address' => 'required|string',
-            'is_admin' => 'required'
-        ]);
+    public function createUser(Request $request)
+    {
+        try {
+            $validateUser = Validator::make($request->all(), [
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required',
+                'gender' => 'required',
+                'age' => 'required|integer',
+                'number' => 'required',
+                'address' => 'required|string',
+                'is_admin' => 'required|in:doctor,patient', // Ensure is_admin is either 'doctor' or 'patient'
+            ]);
 
-        if ($validateUser->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validation error',
-                'errors' => $validateUser->errors()
-            ], 422);
-        }
+            if ($validateUser->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation error',
+                    'errors' => $validateUser->errors()
+                ], 422);
+            }
 
-        $userData = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'gender' => $request->gender,
-            'age' => $request->age,
-            'number' => $request->number,
-            'address' => $request->address,
-        ];
-
-
-        if ($request->is_admin === "doctor" || $request->is_admin === "patient") {
-            $userData['is_admin'] = $request->is_admin;
             // Create user
-            $user = User::create($userData);
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'is_admin' => $request->is_admin,
+            ]);
 
-            // Optionally, you can also create a Doctor or Patient record here based on is_admin value
-            if ($request->is_admin === "doctor") {
-                Doctor::create($userData+['department_id'=>$request->department_id]);
-            } elseif ($request->is_admin === "patient") {
-                Patient::create($userData);
+            // Optionally, create a Doctor or Patient record based on is_admin value
+            if ($request->is_admin === 'doctor') {
+                Doctor::create([
+                    'id' => $user->id ,
+                    'user_id' => $user->id, // Assign the user_id to the created user's id
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'gender' => $request->gender,
+                    'age' => $request->age,
+                    'number' => $request->number,
+                    'address' => $request->address,
+                    'password' => Hash::make($request->password),
+                    'department_id' => $request->department_id,
+                    // Add other doctor-specific fields here
+                ]);
+            } elseif ($request->is_admin === 'patient') {
+
+                Patient::create([
+                    'id' => $user->id ,
+                    'user_id' => $user->id, // Assign the user_id to the created user's id
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'gender' => $request->gender,
+                    'age' => $request->age,
+                    'number' => $request->number,
+                    'address' => $request->address,
+                    // Add other patient-specific fields here
+                ]);
             }
 
             return response()->json([
                 'status' => true,
-                'message' => 'successfully',
-                'token' => $user->createToken("token")->plainTextToken,
-                'id' => $user->id ,
+                'message' => 'Successfully registered',
+                'token' => $user->createToken('token')->plainTextToken,
+                'id' => $user->id,
             ], 201); // Use 201 Created status for successful creation
-        } else {
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Invalid user type'
-            ], 422);
+                'message' => $e->getMessage()
+            ], 500);
         }
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => false,
-            'message' => $e->getMessage()
-        ], 500);
     }
-}
+
 
     /**
      * Login The User

@@ -18,7 +18,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::all();
+        $users = User::with(['freetime', 'doctor'])->get();
 
         // foreach ($users as $user) {
         //     if ($user->is_admin == 'doctor') {
@@ -62,7 +62,10 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        // Retrieve the user along with their free time and doctor details
+        $user = User::with(['freetime', 'doctor'])->findOrFail($id);
+
+        // Return the user's information along with free time and doctor details
         return response()->json(['user' => $user], 200);
     }
 

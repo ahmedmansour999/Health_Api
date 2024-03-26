@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Freetime;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,7 +32,7 @@ class FreetimeController extends Controller
 
 
         $freetime = new Freetime();
-        $freetime->doctor_id = $request->doctor_id;
+        $freetime->user_id = $request->user_id;
         $freetime->doctor_freetimes = $validatedData['doctor_freetimes'];
         $freetime->doctor_freetimesto = $validatedData['doctor_freetimesto'];
         $freetime->days = $validatedData['days'];
@@ -51,10 +52,54 @@ class FreetimeController extends Controller
 
     public function getFreetimesForDoctor($doctorId)
     {
-        $freetimes = Freetime::where('doctor_id', $doctorId)->get();
+        // Retrieve users with doctor details where doctor_id is equal to $doctorId
+        $users = User::with('doctor')->whereHas('doctor', function ($query) use ($doctorId) {
+            $query->where('user_id', $doctorId);
+        })->get();
+
+        // Initialize an array to store freetimes
+        $freetimes = [];
+
+        // Iterate over each user to get freetimes
+        foreach ($users as $user) {
+            // Get the user's id
+            $userId = $user->id;
+
+            // Retrieve freetimes for the user
+            $userFreetimes = Freetime::where('user_id', $userId)->get();
+
+            // Merge the user's freetimes into the main freetimes array
+            $freetimes = array_merge($freetimes, $userFreetimes->toArray());
+        }
+
         return response()->json(['freetimes' => $freetimes], 200);
     }
 
+
+    public function getFreetimesForDoctorFront($doctorId)
+    {
+        // Retrieve users with doctor details where doctor_id is equal to $doctorId
+        $users = User::with('doctor')->whereHas('doctor', function ($query) use ($doctorId) {
+            $query->where('id', $doctorId);
+        })->get();
+
+        // Initialize an array to store freetimes
+        $freetimes = [];
+
+        // Iterate over each user to get freetimes
+        foreach ($users as $user) {
+            // Get the user's id
+            $userId = $user->id;
+
+            // Retrieve freetimes for the user
+            $userFreetimes = Freetime::where('user_id', $userId)->get();
+
+            // Merge the user's freetimes into the main freetimes array
+            $freetimes = array_merge($freetimes, $userFreetimes->toArray());
+        }
+
+        return response()->json(['freetimes' => $freetimes], 200);
+    }
 
 
     public function update(Request $request, Freetime $freetime)

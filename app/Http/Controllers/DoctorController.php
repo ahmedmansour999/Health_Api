@@ -26,22 +26,35 @@ class DoctorController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'specialty' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $data = $request->all();
+        // Get authenticated user
+        $user = $request->user();
 
-        // if ($request->hasFile('image')) {
+        // Get all data from the request
+
+        // Check if image file is uploaded
+            // Generate unique image name
             $imageName = time().'.'.$request->image->extension();
 
-            $imagePath = $request->image->move(public_path('images'), $imageName);
+            // Move the uploaded image to public/images directory
+            $request->image->move(public_path('images'), $imageName);
+
+            // Set image path in the data array
+            $data['image'] = "images/".$imageName;
+
+
+        // If user is authenticated, associate the doctor with the user
 
 
 
-          $data['image'] = "images/".$imageName;
-
+        // Create doctor record
+        if ($user) {
+            $data['user_id'] = $user->id;
+        }
         $doctor = Doctor::create($data);
-        $doctor->save();
+
+        $doctor->save() ;
         return response()->json(['doctor' => $doctor], 201);
     }
 

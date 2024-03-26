@@ -20,6 +20,7 @@ class Doctor extends Model
         'address',
         'department_id',
         'image',
+        'user_id'
     ];
     public function  comments(){
 
@@ -46,9 +47,5 @@ class Doctor extends Model
     public function user(){
         $this->belongsTo(User::class) ;
     }
-    public function  freetime(){
 
-        return $this->hasMany(Freetime::class) ;
-
-    }
 }

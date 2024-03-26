@@ -24,9 +24,7 @@ return new class extends Migration
             $table->string('address');
             $table->rememberToken();
             $table->timestamps();
-            $table->string('image')->nullable();
-
-
+            $table->string('image')->default('doctor.avif');
         });
     }
 

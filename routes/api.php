@@ -83,6 +83,7 @@ Route::apiResource('freetimes' , FreetimeController::class) ;
 
 
 Route::get('freetimesDoc/{doctorId}' , [FreetimeController::class , 'getFreetimesForDoctor']) ;
+Route::get('freetimesDocFront/{doctorId}' , [FreetimeController::class , 'getFreetimesForDoctorFront']) ;
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::get("appointmentDoc/{doctorId}",[AppointmentController::class , 'getAppointmentsForDoctor']);

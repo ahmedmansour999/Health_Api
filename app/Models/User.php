@@ -61,4 +61,9 @@ class User extends Authenticatable
 
     }
 
+    public function  freetime(){
+
+        return $this->hasMany(Freetime::class) ;
+
+    }
 }
